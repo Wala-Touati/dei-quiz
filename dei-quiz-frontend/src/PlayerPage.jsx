@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AvatarPicker from "./components/AvatarPicker";
 import {
   Chart,
@@ -24,7 +24,6 @@ const nextSound = new Audio("/sounds/next.mp3");
 
 export default function PlayerPage() {
   const { roomId } = useParams();
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState("");
   const [joined, setJoined] = useState(false);
@@ -141,10 +140,6 @@ export default function PlayerPage() {
     clickSound.play();
     socket.emit("shareTop", roomId);
     setTopShared(true);
-  };
-
-  const navigateToCharacter = (characterName) => {
-    navigate(`/character/${characterName}`);
   };
 
   // ✨ animations (Ghibli-style)
@@ -325,37 +320,18 @@ export default function PlayerPage() {
       ) : results ? (
         <div>
           <h3>Your Results</h3>
-         <div style={{ marginTop: 20, display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: "20px" }}>
+         <div style={{ marginTop: 20, display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: "30px" }}>
           <div style={{ textAlign: "center" }}>
-            <h4 
-              style={{ 
-                cursor: "pointer", 
-                color: "#FF8C42", 
-                textDecoration: "underline",
-                transition: "color 0.2s"
-              }}
-              onClick={() => navigateToCharacter(results.topTwo[0][0])}
-              onMouseOver={(e) => e.target.style.color = "#FF6B35"}
-              onMouseOut={(e) => e.target.style.color = "#FF8C42"}
-            >
-              Top Character: {results.topTwo[0][0]} (Click for details)
-            </h4>
+            <h4>Top Character: {results.topTwo[0][0]}</h4>
             <img
               src={`/assets/${results.topTwo[0][0].toLowerCase().replace(/\s+/g, "-")}.png`}
               alt={results.topTwo[0][0]}
               style={{
-                width: 80,
-                height: 80,
-                borderRadius: "8px",
-                objectFit: "cover",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                marginTop: 10,
-                cursor: "pointer",
-                transition: "transform 0.2s"
+                width: 150,
+                height: 150,
+                objectFit: "contain",
+                marginTop: 10
               }}
-              onClick={() => navigateToCharacter(results.topTwo[0][0])}
-              onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
-              onMouseOut={(e) => e.target.style.transform = "scale(1)"}
             />
           </div>
         </div>
